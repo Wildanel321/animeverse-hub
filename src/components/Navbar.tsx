@@ -57,7 +57,7 @@ export default function Navbar() {
                 <Sparkles className="w-5 h-5 text-primary-foreground" />
               </motion.div>
               <span className="font-display text-xl font-bold gradient-text hidden sm:block">
-                AnimeVault
+                AnimeKita
               </span>
             </Link>
 
