@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -385,6 +385,16 @@ export default function AnimeDetailPage() {
                         />
                       ))}
                     </div>
+                  ) : anime.episodes ? (
+                    <div className="grid gap-2 max-h-[500px] overflow-y-auto pr-2 hide-scrollbar">
+                      {Array.from({ length: anime.episodes }).map((_, i) => (
+                        <EpisodeItemPlaceholder
+                          key={i + 1}
+                          episodeNum={i + 1}
+                          anime={anime}
+                        />
+                      ))}
+                    </div>
                   ) : (
                     <p className="text-muted-foreground text-center py-8">
                       No episode information available.
@@ -459,6 +469,8 @@ function InfoItem({ label, value }: { label: string; value: string | null | unde
 }
 
 function EpisodeItem({ episode, anime }: { episode: any; anime: any }) {
+  const navigate = useNavigate();
+  
   const handleClick = () => {
     addToHistory(
       anime.mal_id,
@@ -466,7 +478,7 @@ function EpisodeItem({ episode, anime }: { episode: any; anime: any }) {
       anime.images.jpg.large_image_url,
       episode.mal_id
     );
-    toast.success(`Added Episode ${episode.mal_id} to history`);
+    navigate(`/watch/${anime.mal_id}/${episode.mal_id}`);
   };
 
   return (
@@ -495,7 +507,39 @@ function EpisodeItem({ episode, anime }: { episode: any; anime: any }) {
           Filler
         </Badge>
       )}
-      <Bookmark className="w-4 h-4 text-muted-foreground" />
+      <Play className="w-4 h-4 text-muted-foreground" />
+    </motion.button>
+  );
+}
+
+function EpisodeItemPlaceholder({ episodeNum, anime }: { episodeNum: number; anime: any }) {
+  const navigate = useNavigate();
+  
+  const handleClick = () => {
+    addToHistory(
+      anime.mal_id,
+      anime.title,
+      anime.images.jpg.large_image_url,
+      episodeNum
+    );
+    navigate(`/watch/${anime.mal_id}/${episodeNum}`);
+  };
+
+  return (
+    <motion.button
+      whileHover={{ x: 4 }}
+      onClick={handleClick}
+      className="flex items-center gap-4 p-4 rounded-xl glass hover:bg-muted/50 transition-colors text-left w-full"
+    >
+      <div className="w-10 h-10 rounded-lg gradient-bg flex items-center justify-center flex-shrink-0">
+        <span className="text-sm font-bold text-primary-foreground">
+          {episodeNum}
+        </span>
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="font-medium line-clamp-1">Episode {episodeNum}</p>
+      </div>
+      <Play className="w-4 h-4 text-muted-foreground" />
     </motion.button>
   );
 }
