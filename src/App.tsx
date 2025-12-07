@@ -10,6 +10,7 @@ import Seasonal from "./pages/Seasonal";
 import Search from "./pages/Search";
 import Favorites from "./pages/Favorites";
 import AnimeDetail from "./pages/AnimeDetail";
+import EpisodePlayer from "./pages/EpisodePlayer";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="/search" element={<Search />} />
             <Route path="/favorites" element={<Favorites />} />
             <Route path="/anime/:id" element={<AnimeDetail />} />
+            <Route path="/watch/:animeId/:episodeNum" element={<EpisodePlayer />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
